@@ -1,6 +1,7 @@
 # SocketAttack
 > [!WARNING]
 > Only for educational purposes.
+
 *This script flooding the target server with tons of HTTP/1.1 TLS socket.*
 
 **Features:**
