@@ -1,11 +1,12 @@
 # SocketAttack
-# WARNING: Only for educational purposes.
+> [!WARNING]
+> Only for educational purposes.
 *This script flooding the target server with tons of HTTP/1.1 TLS socket.*
 
 **Features:**
 - Support SSL/TLS and HTTP/1.1 target only.
 - Support SOCKS5 proxy.
-# Usage
+## Usage
 **Build the source:**
 ```bash
 go build
@@ -14,7 +15,8 @@ go build
 ```bash
 ./flooder URL DURATION REQUEST_RATE THREADS PROXY_FILE
 ```
-**WARNING: Please don't set threads greater than your CPU cores**
+> [!WARNING]
+> Please don't set threads greater than your CPU cores**
 
 **How to reach me?**
 - Telegram: https://t.me/PseudoTGA
